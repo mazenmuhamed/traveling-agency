@@ -95,12 +95,6 @@ traveling-agency/
 - **Spacing** - Consistent padding and margins using Tailwind's design system
 - **Components** - Reusable, composable UI elements with shadcn/ui patterns
 
-## 📱 Responsive Breakpoints
-
-- **Mobile:** < 640px
-- **Tablet:** 640px - 1024px
-- **Desktop:** > 1024px
-
 ## 🌟 Highlights
 
 - ⚡ **Lightning Fast** - Optimized with Next.js App Router and React Server Components
