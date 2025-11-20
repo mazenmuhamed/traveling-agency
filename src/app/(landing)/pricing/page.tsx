@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 
-import { PricingContent } from '../../../components/pricing-content/pricing-content'
+import { PricingContent } from '@/components/pricing-content/pricing-content'
 
 export const metadata: Metadata = {
   title: 'Pricing - Traveling Agency',

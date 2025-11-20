@@ -1,39 +1,25 @@
 'use client'
 
+import Link from 'next/link'
+import Image from 'next/image'
+import { useRef, useState } from 'react'
+import { ArrowRight, Pause, Play, Star } from 'lucide-react'
+
+import { Logo } from '@/components/logo'
+import { Button } from '@/components/ui/button'
 import { BlurFade } from '@/components/animations/blur-fade'
 import { TextAnimate } from '@/components/animations/text-animate'
-import { Logo } from '@/components/logo'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import { ArrowRight, Pause, Play, Star } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useRef, useState } from 'react'
 
 const reviews = {
   count: 200,
   rating: 5.0,
   avatars: [
-    {
-      src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-1.webp',
-      alt: 'Avatar 1',
-    },
-    {
-      src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-2.webp',
-      alt: 'Avatar 2',
-    },
-    {
-      src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-3.webp',
-      alt: 'Avatar 3',
-    },
-    {
-      src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-4.webp',
-      alt: 'Avatar 4',
-    },
-    {
-      src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-5.webp',
-      alt: 'Avatar 5',
-    },
+    { src: '/assets/avatars/avatar-1.webp', alt: 'Avatar 1' },
+    { src: '/assets/avatars/avatar-2.webp', alt: 'Avatar 2' },
+    { src: '/assets/avatars/avatar-3.webp', alt: 'Avatar 3' },
+    { src: '/assets/avatars/avatar-4.webp', alt: 'Avatar 4' },
+    { src: '/assets/avatars/avatar-5.webp', alt: 'Avatar 5' },
   ],
 }
 

@@ -23,6 +23,7 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: `${destination.name} - Travel Package Details`,
     description: `Explore the details of our exclusive travel package to ${destination.name}, including itinerary, pricing, and more.`,
+    keywords: ['travel', 'package', destination.name, destination.country],
   }
 }
 
