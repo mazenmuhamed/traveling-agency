@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌍 Traveling Agency
 
-## Getting Started
+A modern, full-featured travel booking platform built with Next.js 16, React 19, and TypeScript. Discover amazing destinations, explore curated travel packages, and plan your perfect getaway with our intuitive and beautiful interface.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### 🗺️ Trip Packages & Destinations
+
+- **80+ Global Destinations** - Explore carefully curated travel packages across the world
+- **Advanced Filtering** - Search and filter destinations by country, price range, and duration
+- **Detailed Itineraries** - Comprehensive package information with pricing, duration, and highlights
+- **Beautiful Gallery** - High-quality imagery showcasing each destination
+
+### 💼 Flexible Pricing Plans
+
+- **Explorer Plan** ($99/month) - Perfect for solo travelers with access to 20+ destinations
+- **Adventurer Plan** ($199/month) - Most popular! For frequent travelers with 80+ destinations and premium perks
+- **Luxury Plan** ($499/month) - Ultimate travel experience with unlimited destinations and concierge service
+- **Flexible Billing** - Choose between monthly and yearly subscriptions with savings
+
+### 🎨 Modern User Experience
+
+- **Responsive Design** - Seamless experience across desktop, tablet, and mobile devices
+- **Dark Mode Support** - Built-in theme switching with next-themes
+- **Smooth Animations** - Powered by Motion (Framer Motion) for delightful interactions
+- **Accessibility First** - Built with Radix UI primitives ensuring WCAG compliance
+
+### 📱 Interactive Components
+
+- **Smart Booking System** - Intuitive booking dialog with form validation
+- **Dynamic Filtering** - Real-time search and filter capabilities
+- **Carousel Galleries** - Auto-playing image carousels with Embla
+- **Toast Notifications** - Beautiful feedback with Sonner
+- **Calendar Integration** - Date picking with react-day-picker
+
+## 🚀 Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript 5
+- **UI Library:** React 19
+- **Styling:** Tailwind CSS 4
+- **Component Library:** Radix UI
+- **Forms:** React Hook Form + Zod validation
+- **Animations:** Motion (Framer Motion)
+- **Icons:** Lucide React + Flag Icons
+- **State Management:** React Hooks + usehooks-ts
+
+## 📦 Project Structure
+
+```
+traveling-agency/
+├── src/
+│   ├── app/
+│   │   ├── (landing)/          # Landing pages group
+│   │   │   ├── page.tsx         # Home page
+│   │   │   ├── about/           # About page
+│   │   │   ├── pricing/         # Pricing plans
+│   │   │   └── details/[id]/    # Package details (dynamic)
+│   │   ├── layout.tsx           # Root layout
+│   │   └── globals.css          # Global styles
+│   ├── components/
+│   │   ├── ui/                  # Reusable UI components
+│   │   ├── animations/          # Animation components
+│   │   ├── trip-packages/       # Package listing & filters
+│   │   ├── pricing-content/     # Pricing cards & plans
+│   │   ├── banner.tsx           # Hero banner
+│   │   ├── navbar.tsx           # Navigation
+│   │   └── booking-dialog.tsx   # Booking modal
+│   ├── data/
+│   │   └── destinations.ts      # Destination data
+│   ├── hooks/
+│   │   ├── use-breakpoint.ts    # Responsive breakpoints
+│   │   └── use-destination-filter.ts  # Filter logic
+│   ├── lib/
+│   │   ├── utils.ts             # Utility functions
+│   │   └── constants.ts         # App constants
+│   └── models/
+│       └── destination.model.ts # TypeScript types
+└── public/
+    ├── assets/                  # Images & videos
+    └── brand/                   # Brand assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎯 Key Pages
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Home (`/`)** - Hero banner and trip packages showcase
+- **About (`/about`)** - Company information and mission
+- **Pricing (`/pricing`)** - Subscription plans comparison
+- **Package Details (`/details/[id]`)** - Individual package information
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎨 Design Features
 
-## Learn More
+- **Color Scheme** - Modern, vibrant palette optimized for travel
+- **Typography** - Clean, readable fonts with proper hierarchy
+- **Spacing** - Consistent padding and margins using Tailwind's design system
+- **Components** - Reusable, composable UI elements with shadcn/ui patterns
 
-To learn more about Next.js, take a look at the following resources:
+## 📱 Responsive Breakpoints
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Mobile:** < 640px
+- **Tablet:** 640px - 1024px
+- **Desktop:** > 1024px
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🌟 Highlights
 
-## Deploy on Vercel
+- ⚡ **Lightning Fast** - Optimized with Next.js App Router and React Server Components
+- 🎯 **Type Safe** - Full TypeScript coverage with strict mode
+- 🎨 **Modern UI** - Beautiful, accessible components with Radix UI
+- 📱 **Mobile First** - Responsive design that works everywhere
+- 🔍 **SEO Optimized** - Proper meta tags and semantic HTML
+- ♿ **Accessible** - WCAG compliant with keyboard navigation support
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built with ❤️ using Next.js and modern web technologies
