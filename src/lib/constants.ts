@@ -2,13 +2,10 @@ import {
   Target,
   Sparkles,
   TrendingUp,
-  Globe,
   Award,
   Heart,
   Shield,
   Compass,
-  MapPin,
-  Plane,
 } from 'lucide-react'
 
 export const priceRanges = [

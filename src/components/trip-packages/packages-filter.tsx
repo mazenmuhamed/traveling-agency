@@ -1,15 +1,14 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Search, X } from 'lucide-react'
+import { Control } from 'react-hook-form'
 
 import { priceRanges } from '@/lib/constants'
 import { destinations } from '@/data/destinations'
+import type { PackagesFilterSchema } from '@/validators/packages-filter.validator'
 
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
-
+import { FormControl, FormField, FormItem } from '@/components/ui/form'
 import {
   Select,
   SelectContent,
@@ -18,26 +17,22 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
+import { PackagesAutoCompleteInput } from './packages-autocomplete-input'
+
 import 'flag-icons/css/flag-icons.min.css'
 
 type Props = {
-  searchQuery: string
-  setSearchQuery: (value: string) => void
-  selectedCountry: string | null
-  setSelectedCountry: (value: string | null) => void
-  priceRange: string | null
-  setPriceRange: (value: string | null) => void
-  filteredDestinations: typeof destinations
+  resultsCount: number
+  haveFilters: boolean
+  control: Control<PackagesFilterSchema>
+  onClearFilters: VoidFunction
 }
 
 export function PackagesFilter({
-  searchQuery,
-  setSearchQuery,
-  selectedCountry,
-  setSelectedCountry,
-  priceRange,
-  setPriceRange,
-  filteredDestinations,
+  resultsCount,
+  haveFilters,
+  control,
+  onClearFilters,
 }: Props) {
   // Get unique list of countries from destinations
   const countries = useMemo(() => {
@@ -51,101 +46,102 @@ export function PackagesFilter({
   }
 
   return (
-    <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start">
+    <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center">
       {/* Search */}
-      <div className="relative flex-1">
-        <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
-        <Input
-          type="text"
-          placeholder="Search destinations..."
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-          className="pr-10 pl-10"
-        />
-        {searchQuery && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-1/2 right-1 size-8 -translate-y-1/2"
-            onClick={() => setSearchQuery('')}
-          >
-            <X className="size-4" />
-          </Button>
-        )}
-      </div>
+      <PackagesAutoCompleteInput />
 
       {/* Country Filter */}
-      <Select
-        value={selectedCountry || 'all'}
-        onValueChange={val => setSelectedCountry(val === 'all' ? null : val)}
-      >
-        <SelectTrigger className="w-[180px] max-sm:w-full">
-          <SelectValue
-            placeholder={
-              selectedCountry ? (
-                <>
-                  <span
-                    className={`fi fi-${getCountryCode(selectedCountry)} mr-2 size-4`}
+      <FormField
+        control={control}
+        name="selectedCountry"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <Select
+                value={field.value || 'all'}
+                onValueChange={val => field.onChange(val === 'all' ? '' : val)}
+              >
+                <SelectTrigger className="w-[180px] max-sm:w-full">
+                  <SelectValue
+                    placeholder={
+                      field.value ? (
+                        <>
+                          <span
+                            className={`fi fi-${getCountryCode(field.value)} mr-2 size-4`}
+                          />
+                          {field.value}
+                        </>
+                      ) : (
+                        'All Countries'
+                      )
+                    }
                   />
-                  {selectedCountry}
-                </>
-              ) : (
-                'All Countries'
-              )
-            }
-          />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All Countries</SelectItem>
-          {countries.map(country => (
-            <SelectItem key={country} value={country}>
-              <span className="flex items-center gap-2">
-                <span
-                  className={`fi fi-${getCountryCode(country)} mr-2 size-4`}
-                />
-                {country}
-              </span>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Countries</SelectItem>
+                  {countries.map(country => (
+                    <SelectItem key={country} value={country}>
+                      <span className="flex items-center gap-2">
+                        <span
+                          className={`fi fi-${getCountryCode(country)} mr-2 size-4`}
+                        />
+                        {country}
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormControl>
+          </FormItem>
+        )}
+      />
 
       {/* Price Filter */}
-      <Select
-        value={priceRange || 'all'}
-        onValueChange={val => setPriceRange(val === 'all' ? null : val)}
-      >
-        <SelectTrigger className="w-[180px] max-sm:w-full">
-          <SelectValue placeholder={priceRange || 'All Prices'} />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All Prices</SelectItem>
-          {priceRanges.map(range => (
-            <SelectItem key={range.label} value={range.label}>
-              {range.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <FormField
+        control={control}
+        name="priceRange"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <Select
+                value={field.value || 'all'}
+                onValueChange={val => field.onChange(val === 'all' ? '' : val)}
+              >
+                <SelectTrigger className="w-[180px] max-sm:w-full">
+                  <SelectValue placeholder={field.value || 'All Prices'} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Prices</SelectItem>
+                  {priceRanges.map(range => (
+                    <SelectItem
+                      key={range.label}
+                      value={`${range.min}-${range.max === Infinity ? '' : range.max}`}
+                    >
+                      {range.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormControl>
+          </FormItem>
+        )}
+      />
 
-      {/* Active Filters Count */}
-      {(selectedCountry || priceRange) && (
-        <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="font-semibold">
-            {filteredDestinations.length} results
-          </Badge>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              setSelectedCountry(null)
-              setPriceRange(null)
-            }}
-          >
-            Clear filters
-          </Button>
-        </div>
-      )}
+      {/* Clear Filters Button */}
+      <div className="flex items-center gap-x-2 max-sm:[&>button]:grow">
+        <Button type="submit">Filter</Button>
+        {haveFilters && (
+          <div className="flex items-center gap-x-2">
+            <Button variant="outline" onClick={onClearFilters}>
+              Clear Filters
+            </Button>
+            <div className="bg-secondary flex items-center justify-center gap-1 rounded-full px-3 py-1.5 text-sm">
+              <p>{resultsCount}</p>
+              <p className="text-sm">results</p>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

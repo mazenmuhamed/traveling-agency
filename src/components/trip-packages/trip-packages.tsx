@@ -1,9 +1,18 @@
 'use client'
 
+import { useMemo } from 'react'
 import { SearchX } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useSearchParams } from 'next/navigation'
 
-import { useDestinationFilter } from '@/hooks/use-destination-filter'
+import { destinations } from '@/data/destinations'
+import {
+  packagesFilterSchema,
+  type PackagesFilterSchema,
+} from '@/validators/packages-filter.validator'
 
+import { Form } from '@/components/ui/form'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { BlurFade } from '@/components/animations/blur-fade'
@@ -14,16 +23,71 @@ import { PackagesFilter } from './packages-filter'
 import 'flag-icons/css/flag-icons.min.css'
 
 export function TripPackages() {
-  const {
-    searchQuery,
-    setSearchQuery,
-    selectedCountry,
-    setSelectedCountry,
-    priceRange,
-    setPriceRange,
-    destinations,
-    clearFilters,
-  } = useDestinationFilter()
+  const searchParams = useSearchParams()
+
+  const form = useForm<PackagesFilterSchema>({
+    resolver: zodResolver(packagesFilterSchema),
+    defaultValues: {
+      selectedCountry: searchParams.get('country'),
+      priceRange: (() => {
+        const minPrice = searchParams.get('minPrice')
+        const maxPrice = searchParams.get('maxPrice')
+        return minPrice ? `${minPrice}-${maxPrice || ''}` : null
+      })(),
+    },
+  })
+
+  function handleSubmitForm(data: PackagesFilterSchema) {
+    const params = new URLSearchParams(searchParams.toString())
+
+    if (data.selectedCountry) {
+      params.set('country', data.selectedCountry)
+    } else {
+      params.delete('country')
+    }
+
+    if (data.priceRange) {
+      const [min, max] = data.priceRange.split('-')
+
+      params.set('minPrice', min)
+
+      if (max) params.set('maxPrice', max)
+    } else {
+      params.delete('minPrice')
+      params.delete('maxPrice')
+    }
+
+    const queryString = params.toString()
+    const newUrl = queryString ? `/?${queryString}` : '/'
+    window.history.replaceState(null, '', newUrl)
+  }
+
+  const packages = useMemo(() => {
+    const country = searchParams.get('country') || ''
+    const minPrice = searchParams.get('minPrice') || ''
+    const maxPrice = searchParams.get('maxPrice') || ''
+
+    if (!country && !minPrice && !maxPrice) {
+      return destinations
+    }
+
+    return destinations.filter(destination => {
+      const matchesCountry = country ? destination.country === country : true
+
+      const matchesPrice =
+        minPrice || maxPrice
+          ? destination.price >= +minPrice &&
+            destination.price <= (maxPrice ? +maxPrice : Infinity)
+          : true
+
+      return matchesCountry && matchesPrice
+    })
+  }, [searchParams])
+
+  function clearFilters() {
+    form.reset({ selectedCountry: null, priceRange: null })
+    window.history.replaceState(null, '', '/')
+  }
 
   return (
     <section
@@ -49,21 +113,26 @@ export function TripPackages() {
             </p>
           </div>
           {/* Search and Filters */}
-          <PackagesFilter
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            selectedCountry={selectedCountry}
-            setSelectedCountry={setSelectedCountry}
-            priceRange={priceRange}
-            setPriceRange={setPriceRange}
-            filteredDestinations={destinations}
-          />
+
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleSubmitForm)}>
+              <PackagesFilter
+                control={form.control}
+                resultsCount={packages.length}
+                onClearFilters={clearFilters}
+                haveFilters={
+                  !!form.getValues('selectedCountry') ||
+                  !!form.getValues('priceRange')
+                }
+              />
+            </form>
+          </Form>
         </BlurFade>
 
         {/* Grid or Empty State */}
-        {destinations.length > 0 ? (
+        {packages.length > 0 ? (
           <div className="grid auto-rows-fr grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {destinations.map((destination, index) => (
+            {packages.map((destination, index) => (
               <BlurFade key={destination.id} delay={0.1 + index * 0.05} inView>
                 <PackageCard destination={destination} priority={index < 4} />
               </BlurFade>

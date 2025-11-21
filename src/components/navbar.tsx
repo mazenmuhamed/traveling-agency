@@ -29,8 +29,8 @@ export function Navbar() {
       {/* Desktop & Tablet Navbar */}
       <motion.nav
         className="bg-accent sticky top-6 z-50 mx-auto my-6 hidden overflow-hidden rounded-full sm:block"
-        initial={{ maxWidth: '36rem' }}
-        animate={{ maxWidth: isExpanded ? '42rem' : '36rem' }}
+        initial={{ maxWidth: '32rem' }}
+        animate={{ maxWidth: isExpanded ? '38rem' : '32rem' }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       >
         <div className="flex h-14 items-center justify-between px-4">

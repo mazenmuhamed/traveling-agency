@@ -5,6 +5,7 @@ import { destinations } from '@/data/destinations'
 
 /**
  * Custom hook to manage destination filtering based on search query, country, and price range.
+ * @deprecated Use react-hook-form in combination with URL search params instead.
  */
 export function useDestinationFilter() {
   const [searchQuery, setSearchQuery] = useState('')
