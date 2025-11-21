@@ -195,6 +195,7 @@ export function Banner() {
                   playsInline
                   autoPlay
                   ref={videoRef}
+                  preload="auto"
                   className="h-full w-full object-cover"
                 >
                   <source

@@ -8,7 +8,7 @@ A modern, full-featured travel booking platform built with Next.js 16, React 19,
 
 ### 🗺️ Trip Packages & Destinations
 
-- **80+ Global Destinations** - Explore carefully curated travel packages across the world
+- **20+ Global Destinations** - Explore carefully curated travel packages across the world
 - **Advanced Filtering** - Search and filter destinations by country, price range, and duration
 - **Detailed Itineraries** - Comprehensive package information with pricing, duration, and highlights
 - **Beautiful Gallery** - High-quality imagery showcasing each destination

@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { SearchX } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -24,6 +24,7 @@ import 'flag-icons/css/flag-icons.min.css'
 
 export function TripPackages() {
   const searchParams = useSearchParams()
+  const [displayCount, setDisplayCount] = useState(10)
 
   const form = useForm<PackagesFilterSchema>({
     resolver: zodResolver(packagesFilterSchema),
@@ -89,6 +90,20 @@ export function TripPackages() {
     window.history.replaceState(null, '', '/')
   }
 
+  const displayedPackages = packages.slice(0, displayCount)
+  const hasMore = displayCount < packages.length
+  const canShowLess = displayCount > 10
+
+  function handleLoadMore() {
+    setDisplayCount(prev => Math.min(prev + 10, packages.length))
+  }
+
+  function handleLoadLess() {
+    setDisplayCount(10)
+    // Scroll to the packages section
+    document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <section
       id="features"
@@ -131,13 +146,45 @@ export function TripPackages() {
 
         {/* Grid or Empty State */}
         {packages.length > 0 ? (
-          <div className="grid auto-rows-fr grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {packages.map((destination, index) => (
-              <BlurFade key={destination.id} delay={0.1 + index * 0.05} inView>
-                <PackageCard destination={destination} priority={index < 4} />
-              </BlurFade>
-            ))}
-          </div>
+          <>
+            <div className="grid auto-rows-fr grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {displayedPackages.map((destination, index) => (
+                <BlurFade
+                  key={destination.id}
+                  delay={0.1 + index * 0.05}
+                  inView
+                >
+                  <PackageCard destination={destination} priority={index < 4} />
+                </BlurFade>
+              ))}
+            </div>
+
+            {/* Load More / Load Less Buttons */}
+            {(hasMore || canShowLess) && (
+              <div className="mt-12 flex justify-center">
+                <BlurFade inView>
+                  {hasMore ? (
+                    <Button
+                      size="lg"
+                      onClick={handleLoadMore}
+                      className="min-w-[200px] sm:text-base"
+                    >
+                      Show More
+                    </Button>
+                  ) : (
+                    <Button
+                      size="lg"
+                      onClick={handleLoadLess}
+                      variant="outline"
+                      className="min-w-[200px] sm:text-base"
+                    >
+                      Show Less
+                    </Button>
+                  )}
+                </BlurFade>
+              </div>
+            )}
+          </>
         ) : (
           <BlurFade inView>
             <div className="bg-muted/30 mx-auto flex w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-16 text-center sm:py-24">
