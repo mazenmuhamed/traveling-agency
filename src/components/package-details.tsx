@@ -15,13 +15,17 @@ import {
   Share2,
 } from 'lucide-react'
 
+import { cn } from '@/lib/utils'
+import { usePlacesStorage } from '@/hooks/use-places-storage'
 import type { Destination } from '@/models/destination.model'
 
 import { Button } from '@/components/ui/button'
 import { BlurFade } from '@/components/animations/blur-fade'
 
-import 'flag-icons/css/flag-icons.min.css'
 import { BookingDialog } from './booking-dialog'
+import { ActionTooltip } from './action-tooltip'
+
+import 'flag-icons/css/flag-icons.min.css'
 
 const packageIncludes = [
   'Expert local guides',
@@ -53,6 +57,15 @@ const packageItinerary = [
 
 export function PackageDetails({ destination }: { destination: Destination }) {
   const [openBookingDialog, setOpenBookingDialog] = useState(false)
+  const { savePlace, removePlace, isPlaceSaved } = usePlacesStorage()
+
+  function handleBookmark() {
+    if (isPlaceSaved(destination.id)) {
+      removePlace(destination.id)
+    } else {
+      savePlace(destination.id)
+    }
+  }
 
   return (
     <div className="bg-background min-h-screen">
@@ -73,12 +86,32 @@ export function PackageDetails({ destination }: { destination: Destination }) {
             </Button>
 
             <div className="flex gap-2">
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Heart className="size-4" />
-              </Button>
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Share2 className="size-4" />
-              </Button>
+              <ActionTooltip
+                tooltip={
+                  isPlaceSaved(destination.id)
+                    ? 'Remove from Favorites'
+                    : 'Add to Favorites'
+                }
+              >
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full"
+                  onClick={handleBookmark}
+                >
+                  <Heart
+                    className={cn(
+                      'size-4',
+                      isPlaceSaved(destination.id) && 'fill-red-500',
+                    )}
+                  />
+                </Button>
+              </ActionTooltip>
+              <ActionTooltip tooltip="Share">
+                <Button variant="outline" size="icon" className="rounded-full">
+                  <Share2 className="size-4" />
+                </Button>
+              </ActionTooltip>
             </div>
           </div>
         </BlurFade>
