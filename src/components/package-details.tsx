@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { toast } from 'sonner'
 import { useState } from 'react'
 import {
   ArrowLeft,
@@ -67,6 +68,13 @@ export function PackageDetails({ destination }: { destination: Destination }) {
     }
   }
 
+  // Copy to clipboard or use Web Share API
+  function handleShare() {
+    navigator.clipboard
+      .writeText(window.location.href)
+      .then(() => toast.success('Link copied to clipboard!'))
+  }
+
   return (
     <div className="bg-background min-h-screen">
       <div className="container mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
@@ -94,8 +102,8 @@ export function PackageDetails({ destination }: { destination: Destination }) {
                 }
               >
                 <Button
-                  variant="outline"
                   size="icon"
+                  variant="outline"
                   className="rounded-full"
                   onClick={handleBookmark}
                 >
@@ -108,7 +116,12 @@ export function PackageDetails({ destination }: { destination: Destination }) {
                 </Button>
               </ActionTooltip>
               <ActionTooltip tooltip="Share">
-                <Button variant="outline" size="icon" className="rounded-full">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full"
+                  onClick={handleShare}
+                >
                   <Share2 className="size-4" />
                 </Button>
               </ActionTooltip>

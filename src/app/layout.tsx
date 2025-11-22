@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { Outfit } from 'next/font/google'
 
+import { Toaster } from '@/components/ui/sonner'
+import { toastOptions } from '@/lib/constants'
+
 import './globals.css'
 
 const font = Outfit({
@@ -38,7 +41,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={font.variable}>{children}</body>
+      <body className={font.variable}>
+        {children}
+        <Toaster toastOptions={toastOptions} />
+      </body>
     </html>
   )
 }

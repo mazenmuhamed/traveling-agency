@@ -7,6 +7,14 @@ import {
   Shield,
   Compass,
 } from 'lucide-react'
+import { ToasterProps } from 'sonner'
+
+export const toastOptions: ToasterProps['toastOptions'] = {
+  style: {
+    color: 'var(--text)',
+    background: 'var(--popover)',
+  },
+}
 
 export const priceRanges = [
   { label: 'Under $1,500', min: 0, max: 1500 },
